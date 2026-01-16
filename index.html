@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mein Lernportfolio</title>
+    <title>Portfolio Knowledge Graph</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <style>
         * {
@@ -14,353 +14,437 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #3b3864;
-            min-height: 100vh;
-            padding: 20px;
+            background: #f5f5f5;
         }
 
         .container {
-            display: flex;
-            gap: 20px;
-            max-width: 1600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            min-height: calc(100vh - 40px);
+            display: grid;
+            grid-template-columns: 300px 1fr 450px;
+            height: 100vh;
+            gap: 0;
         }
 
         .sidebar {
-            padding: 30px 20px;
-            background: #f8f9fa;
-        }
-
-        .sidebar-left {
-            width: 20%;
-            border-right: 2px solid #e9ecef;
-            display: none;
-        }
-
-        .sidebar-right {
-            width: 40%;
-            border-left: 2px solid #e9ecef;
-        }
-
-        .main-content {
-            width: 60%;
-            padding: 40px;
-            /* overflow-y: auto; */
-        }
-
-        h1 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        h2 {
-            color: #495057;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 8px;
-        }
-
-        h3 {
-            color: #6c757d;
-            margin: 20px 0 10px;
-            font-size: 1.1em;
-        }
-
-        .profile {
-            margin-bottom: 30px;
-        }
-
-        .profile-info {
             background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #ddd;
         }
 
-        .profile-info p {
-            margin: 8px 0;
-            color: #495057;
-            font-size: 0.9em;
+        .sidebar h2 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #333;
         }
 
-        .article-list {
+        .node-list {
             list-style: none;
         }
 
-        .article-list li {
-            margin: 10px 0;
+        .node-list li {
+            padding: 8px 12px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.2s;
+            font-size: 0.9em;
         }
 
-        .article-list a {
+        .node-list li:hover {
+            background: #e8f4f8;
+        }
+
+        .node-list li.active {
+            background: #4a90e2;
+            color: white;
+        }
+
+        .node-type {
+            font-size: 0.75em;
+            color: #666;
             display: block;
-            padding: 10px;
+            margin-top: 2px;
+        }
+
+        .content-area {
             background: white;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #495057;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
+            padding: 40px;
+            overflow-y: auto;
         }
 
-        .article-list a:hover {
-            background: #667eea;
-            color: white;
-            border-left-color: #764ba2;
-            transform: translateX(5px);
+        .content-area h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
         }
 
-        .article-list a.active {
-            background: #667eea;
-            color: white;
-            border-left-color: #764ba2;
+        .content-area h2 {
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
         }
 
-        .article-content {
-            line-height: 1.8;
-            color: #343a40;
+        .property {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-left: 3px solid #4a90e2;
+            border-radius: 3px;
         }
 
-        .article-content p {
-            margin: 15px 0;
+        .property-label {
+            font-weight: bold;
+            color: #555;
+            margin-right: 8px;
+        }
+
+        .property-value {
+            color: #333;
+        }
+
+        .property-link {
+            color: #4a90e2;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .property-link:hover {
+            color: #357abd;
+        }
+
+        .graph-container {
+            background: white;
+            border-left: 1px solid #ddd;
+            position: relative;
+        }
+
+        .graph-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            background: #fafafa;
+        }
+
+        .graph-header h3 {
+            font-size: 1em;
+            color: #333;
         }
 
         #knowledge-graph {
             width: 100%;
-            height: 600px;
-            background: #ffffff;
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
-            position: relative;
-        }
-
-        .graph-info {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.85em;
-            color: #6c757d;
+            height: calc(100vh - 60px);
         }
 
         .node circle {
-            fill: #667eea;
-            stroke: #764ba2;
-            stroke-width: 2.5px;
+            fill: #4a90e2;
+            stroke: white;
+            stroke-width: 2px;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .node circle:hover {
-            fill: #764ba2;
-            r: 28;
+            transition: all 0.3s;
         }
 
         .node.active circle {
-            fill: #ff6b6b;
-            stroke: #c92a2a;
+            fill: #e74c3c;
+            r: 30;
+            stroke-width: 3px;
+        }
+
+        .node.connected circle {
+            fill: #27ae60;
         }
 
         .node text {
-            font-size: 11px;
-            fill: #333;
-            pointer-events: none;
             text-anchor: middle;
-            font-weight: 500;
+            fill: #333;
+            font-size: 10px;
+            pointer-events: none;
         }
 
         .link {
             stroke: #999;
-            stroke-opacity: 0.6;
+            stroke-opacity: 0.3;
             stroke-width: 1.5px;
         }
 
         .link.active {
-            stroke: #667eea;
-            stroke-opacity: 1;
-            stroke-width: 3px;
+            stroke: #e74c3c;
+            stroke-opacity: 0.8;
+            stroke-width: 2.5px;
         }
 
-        @media (max-width: 1200px) {
-            .container {
-                flex-direction: column;
-            }
+        .link-label {
+            font-size: 8px;
+            fill: #666;
+            pointer-events: none;
+        }
 
-            .sidebar-left, .sidebar-right, .main-content {
-                width: 100%;
-            }
-
-            .sidebar {
-                border: none !important;
-            }
+        .type-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #3498db;
+            color: white;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <aside class="sidebar sidebar-left">
-            <div class="directory">
-                <h2>Artikelverzeichnis</h2>
-                <ul class="article-list">
-                    <li><a href="#" data-article="intro" class="active">Einführung</a></li>
-                    <li><a href="#" data-article="bibliotheksinformatik">Bibliotheksinformatik</a></li>
-                    <li><a href="#" data-article="patrykgadziomski">Patryk Gadziomski</a></li>
-                    <li><a href="#" data-article="day1">Tag 1 - 15.10.2025</a></li>
-                    <li><a href="#" data-article="day2">Tag 2 - 17.10.2025</a></li>
-                    <li><a href="#" data-article="day3">Tag 3 - 03.12.2025</a></li>
-                    <li><a href="#" data-article="day4">Tag 4 - 04.12.2025</a></li>
-                    <li><a href="#" data-article="day5">Tag 5 - 16.01.2025</a></li>
-                </ul>
+        <div class="sidebar">
+            <h2>Entitäten</h2>
+            <ul class="node-list" id="node-list"></ul>
+        </div>
+        
+        <div class="content-area" id="content-area">
+            <h1>Willkommen</h1>
+            <p>Wähle eine Entität aus der Liste oder dem Graph.</p>
+        </div>
+        
+        <div class="graph-container">
+            <div class="graph-header">
+                <h3>Knowledge Graph</h3>
             </div>
-        </aside>
-
-        <main class="main-content">
-            <article id="article-content" class="article-content">
-                <h1>Willkommen zu meinem Lernportfolio</h1>
-                <p>Dieses Portfolio dokumentiert meine Lernreise im Bereich Semantic Web und Linked Data. Hier sammle ich Artikel, Notizen und Erkenntnisse zu verschiedenen Themen.</p>
-                <h3>Über dieses Portfolio</h3>
-                <p>Das Besondere an diesem Lernportfolio ist die Integration eines Knowledge Graphs auf der rechten Seite. Der Graph visualisiert die Struktur und Beziehungen zwischen den verschiedenen Artikeln und Konzepten, ähnlich wie in Obsidian.</p>
-                <p>Jeder Knoten repräsentiert einen Artikel, und die Verbindungen zeigen, wie die Themen miteinander zusammenhängen. Klicke auf einen Knoten im Graph, um direkt zum entsprechenden Artikel zu springen!</p>
-            </article>
-        </main>
-
-        <aside class="sidebar sidebar-right">
-            <h2>Knowledge Graph</h2>
             <div id="knowledge-graph"></div>
-        </aside>
+        </div>
     </div>
 
     <script>
-        // Daten werden aus JSON-Datei geladen
-        let articles = {};
-        let graphData = {};
-        let currentArticle = 'intro';
+        let jsonldData = null;
+        let currentNodeId = null;
+        let simulation = null;
 
-        // Daten aus JSON-Datei laden
-        async function loadData() {
+        // JSON-LD Datei laden
+        async function loadJSONLD() {
             try {
-                const response = await fetch('data.json');
-                const data = await response.json();
-                articles = data.articles;
-                graphData = data.graphData;
-                
-                // Nach dem Laden der Daten initialisieren
-                initializeApp();
+                const response = await fetch('data.jsonld');
+                jsonldData = await response.json();
+                processJSONLD();
             } catch (error) {
-                console.error('Fehler beim Laden der Daten:', error);
-                // Fallback: Zeige Fehlermeldung
-                document.getElementById('article-content').innerHTML = `
-                    <h1>Fehler beim Laden</h1>
-                    <p>Die Datei data.json konnte nicht geladen werden. Bitte stelle sicher, dass sie im gleichen Verzeichnis liegt.</p>
-                `;
+                console.error('Fehler beim Laden:', error);
+                document.getElementById('content-area').innerHTML = 
+                    '<h1>Fehler</h1><p>JSON-LD Datei konnte nicht geladen werden.</p>';
             }
         }
 
-        // App initialisieren nach dem Laden der Daten
-        function initializeApp() {
-            setupNavigation();
-            createKnowledgeGraph();
-            loadArticle('intro');
+        // JSON-LD verarbeiten
+        function processJSONLD() {
+            const graph = jsonldData['@graph'];
+            if (!graph) {
+                console.error('Kein @graph gefunden');
+                return;
+            }
+
+            // Sidebar füllen
+            populateSidebar(graph);
+            
+            // Knowledge Graph erstellen
+            createKnowledgeGraph(graph);
+            
+            // Erste Entität anzeigen
+            if (graph.length > 0) {
+                showNodeDetails(graph[0]['@id']);
+            }
         }
 
-        // Navigation einrichten
-        function setupNavigation() {
-            document.querySelectorAll('.article-list a').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    loadArticle(e.target.dataset.article);
-                });
+        // Sidebar mit Entitäten füllen
+        function populateSidebar(graph) {
+            const nodeList = document.getElementById('node-list');
+            nodeList.innerHTML = '';
+
+            graph.forEach(node => {
+                const li = document.createElement('li');
+                const name = extractName(node);
+                
+                li.innerHTML = `${name}`;
+                li.dataset.nodeId = node['@id'];
+                li.addEventListener('click', () => showNodeDetails(node['@id']));
+                
+                nodeList.appendChild(li);
             });
         }
 
-        // Navigation zwischen Artikeln
-        function loadArticle(articleId) {
-            currentArticle = articleId;
-            const article = articles[articleId];
-            
-            // Aktiven Link markieren
-            document.querySelectorAll('.article-list a').forEach(a => a.classList.remove('active'));
-            document.querySelector(`[data-article="${articleId}"]`).classList.add('active');
-            
-            // Artikel laden
-            document.getElementById('article-content').innerHTML = `
-                <h1>${article.title}</h1>
-                ${article.content}
-            `;
-
-            // Graph aktualisieren
-            updateGraphHighlight(articleId);
+        // Name aus Knoten extrahieren
+        function extractName(node) {
+            return node['schema:name'] || 
+                   node['name'] || 
+                   node['@id'].split(':')[1] || 
+                   'Unbekannt';
         }
 
-        // Knowledge Graph Visualisierung
-        function createKnowledgeGraph() {
+        // Typ formatieren
+        function extractType(type) {
+            if (!type) return 'Unbekannt';
+            if (typeof type === 'string') {
+                return type.replace('schema:', '');
+            }
+            return type;
+        }
+
+        // Details eines Knotens anzeigen
+        function showNodeDetails(nodeId) {
+            currentNodeId = nodeId;
+            
+            // Sidebar Markierung
+            document.querySelectorAll('.node-list li').forEach(li => {
+                li.classList.toggle('active', li.dataset.nodeId === nodeId);
+            });
+
+            const node = jsonldData['@graph'].find(n => n['@id'] === nodeId);
+            if (!node) return;
+
+            const contentArea = document.getElementById('content-area');
+            const name = extractName(node);
+            const type = extractType(node['@type']);
+
+            let html = `
+                <h1>${name}</h1>
+                <span class="type-badge">${type}</span>
+            `;
+
+            // Eigenschaften anzeigen
+            Object.keys(node).forEach(key => {
+                if (key === '@id' || key === '@type' || key === '@context') return;
+
+                const value = node[key];
+                const label = key.replace('schema:', '').replace('portfolio:', '');
+
+                if (key != 'schema:content') { 
+                    html += `<div class="property">
+                        <span class="property-label">${label}:</span>
+                        <span class="property-value">${formatValue(value)}</span>
+                    </div>`;
+                }
+
+                if (key == "schema:content") {
+                    html += `<div">
+                        <span class="property-value">${formatValue(value)}</span>
+                    </div>`;
+                }
+            });
+
+            contentArea.innerHTML = html;
+
+            // Graph aktualisieren
+            updateGraphHighlight(nodeId);
+        }
+
+        // Wert formatieren
+        function formatValue(value) {
+            if (typeof value === 'object' && value['@id']) {
+                const linkedNode = jsonldData['@graph'].find(n => n['@id'] === value['@id']);
+                const linkedName = linkedNode ? extractName(linkedNode) : value['@id'];
+                return `<span class="property-link" onclick="showNodeDetails('${value['@id']}')">${linkedName}</span>`;
+            }
+            if (Array.isArray(value)) {
+                return value.map(v => formatValue(v)).join(', ');
+            }
+            if (typeof value === 'string' && value.startsWith('http')) {
+                return `<a href="${value}" target="_blank">${value}</a>`;
+            }
+            return value;
+        }
+
+        // Knowledge Graph erstellen
+        function createKnowledgeGraph(graph) {
             const container = document.getElementById('knowledge-graph');
             const width = container.offsetWidth;
-            const height = 600;
+            const height = container.offsetHeight;
+
+            // Knoten und Links extrahieren
+            const nodes = graph.map(node => ({
+                id: node['@id'],
+                label: extractName(node),
+                type: extractType(node['@type'])
+            }));
+
+            const links = [];
+            graph.forEach(node => {
+                Object.keys(node).forEach(key => {
+                    if (key === '@id' || key === '@type' || key === '@context') return;
+                    
+                    const value = node[key];
+                    if (typeof value === 'object' && value['@id']) {
+                        links.push({
+                            source: node['@id'],
+                            target: value['@id'],
+                            label: key.replace('schema:', '').replace('portfolio:', '')
+                        });
+                    } else if (Array.isArray(value)) {
+                        value.forEach(v => {
+                            if (typeof v === 'object' && v['@id']) {
+                                links.push({
+                                    source: node['@id'],
+                                    target: v['@id'],
+                                    label: key.replace('schema:', '').replace('portfolio:', '')
+                                });
+                            }
+                        });
+                    }
+                });
+            });
 
             const svg = d3.select('#knowledge-graph')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height);
 
-            const simulation = d3.forceSimulation(graphData.nodes)
-                .force('link', d3.forceLink(graphData.links).id(d => d.id).distance(80))
-                .force('charge', d3.forceManyBody().strength(-400))
+            // Padding vom Rand
+            const padding = 40;
+
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+                .force('charge', d3.forceManyBody().strength(-300))
                 .force('center', d3.forceCenter(width / 2, height / 2))
-                .force('collision', d3.forceCollide().radius(35));
+                .force('collision', d3.forceCollide().radius(40))
+                .force('x', d3.forceX(width / 2).strength(0.05))
+                .force('y', d3.forceY(height / 2).strength(0.05));
 
             const link = svg.append('g')
                 .selectAll('line')
-                .data(graphData.links)
+                .data(links)
                 .enter().append('line')
                 .attr('class', 'link');
 
+            const linkLabel = svg.append('g')
+                .selectAll('text')
+                .data(links)
+                .enter().append('text')
+                .attr('class', 'link-label')
+                .text(d => d.label);
+
             const node = svg.append('g')
                 .selectAll('g')
-                .data(graphData.nodes)
+                .data(nodes)
                 .enter().append('g')
-                .attr('class', d => d.id === currentArticle ? 'node active' : 'node')
+                .attr('class', 'node')
                 .call(d3.drag()
                     .on('start', dragstarted)
                     .on('drag', dragged)
                     .on('end', dragended))
-                .on('click', (event, d) => {
-                    loadArticle(d.id);
-                });
+                .on('click', (event, d) => showNodeDetails(d.id));
 
             node.append('circle')
-                .attr('r', 25);
+                .attr('r', 20);
 
             node.append('text')
-                .attr('dy', 40)
-                .text(d => d.label)
-                .style('font-size', '11px')
-                .each(function(d) {
-                    const text = d3.select(this);
-                    const words = d.label.split(' ');
-                    if (words.length > 1) {
-                        text.text('');
-                        words.forEach((word, i) => {
-                            text.append('tspan')
-                                .attr('x', 0)
-                                .attr('dy', i === 0 ? 0 : 12)
-                                .text(word);
-                        });
-                    }
-                });
+                .attr('dy', 35)
+                .text(d => d.label.length > 20 ? d.label.substring(0, 18) + '...' : d.label);
 
             simulation.on('tick', () => {
+                // Knoten innerhalb der Grenzen halten
+                nodes.forEach(d => {
+                    d.x = Math.max(padding, Math.min(width - padding, d.x));
+                    d.y = Math.max(padding, Math.min(height - padding, d.y));
+                });
+
                 link
                     .attr('x1', d => d.source.x)
                     .attr('y1', d => d.source.y)
                     .attr('x2', d => d.target.x)
                     .attr('y2', d => d.target.y);
+
+                linkLabel
+                    .attr('x', d => (d.source.x + d.target.x) / 2)
+                    .attr('y', d => (d.source.y + d.target.y) / 2);
 
                 node.attr('transform', d => `translate(${d.x},${d.y})`);
             });
@@ -372,8 +456,8 @@
             }
 
             function dragged(event, d) {
-                d.fx = event.x;
-                d.fy = event.y;
+                d.fx = Math.max(padding, Math.min(width - padding, event.x));
+                d.fy = Math.max(padding, Math.min(height - padding, event.y));
             }
 
             function dragended(event, d) {
@@ -382,28 +466,27 @@
                 d.fy = null;
             }
 
-            // Funktion zum Aktualisieren der Hervorhebung
-            window.updateGraphHighlight = function(articleId) {
-                svg.selectAll('.node')
-                    .classed('active', d => d.id === articleId);
-
-                const connectedNodeIds = new Set();
-                connectedNodeIds.add(articleId);
+            window.updateGraphHighlight = function(nodeId) {
+                const connectedIds = new Set([nodeId]);
                 
-                graphData.links.forEach(link => {
-                    if (link.source.id === articleId) connectedNodeIds.add(link.target.id);
-                    if (link.target.id === articleId) connectedNodeIds.add(link.source.id);
+                links.forEach(link => {
+                    if (link.source.id === nodeId) connectedIds.add(link.target.id);
+                    if (link.target.id === nodeId) connectedIds.add(link.source.id);
                 });
+
+                svg.selectAll('.node')
+                    .classed('active', d => d.id === nodeId)
+                    .classed('connected', d => connectedIds.has(d.id) && d.id !== nodeId);
 
                 svg.selectAll('.link')
                     .classed('active', d => 
-                        (d.source.id === articleId || d.target.id === articleId)
+                        d.source.id === nodeId || d.target.id === nodeId
                     );
             };
         }
 
-        // Daten beim Laden der Seite laden
-        loadData();
+        // App starten
+        loadJSONLD();
     </script>
 </body>
 </html>

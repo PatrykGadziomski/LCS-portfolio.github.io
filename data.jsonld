@@ -1,0 +1,279 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "portfolio": "https://patrykgadziomski.github.io/lcs-portfolio.github.io#",
+    "discusses": "schema:about",
+    "relatedTo": "schema:relatedLink",
+    "hasPart": "schema:hasPart"
+  },
+  "@graph": [
+    {
+      "@id": "portfolio:intro",
+      "@type": "schema:Article",
+      "schema:name": "Intro",
+      "schema:authors": {
+        "@id": "portfolio:patryk"
+      },
+      "schema:about": {
+        "@id": "portfolio:modul"
+      },
+      "schema:content": "<h2>Wilkommen auf meinem Lernportfolio!</h2></p><p>Dieses Portfolio dient der Dokumentation meiner Lernreise im Modul Schnittstellen und Datenformate im Studiengang Biliotheksinformatik an der Technischen Hochschule Wildau. Hier sammle ich Notizen und Erkenntnisse zu verschiedenen Themen aus dem Modul.</p><p>Das Besondere an diesem Lernportfolio ist die Integration eines Knowledge Graphs auf der rechten Seite. Der Graph visualisiert die Struktur und Beziehungen zwischen den verschiedenen Notizen, ähnlich wie in Obsidian (Keine Werbung! Aber eine sehr tolle Software ;)).</p><p>Jeder Knoten repräsentiert eine Notiz, und die Verbindungen zeigen, wie die Themen miteinander zusammenhängen. Klicke auf einen Knoten im Graph, um direkt zum entsprechenden Artikel zu springen!</p><p>Der Aufbau dieses Lerportfolios ist in zeitliche Abschnitte aufgeteilt, je nach den Terminen, an dennen die Vorlesungen stattfanden. In diesen wird kurz zusammengefasst was an diesen Tagen stattfand und was ich gelernt habe.</p<p>Bei der technischen Umsetzung dieses Lernportfolios wurden Claude (ANTHROPIC) und Euria (INFOMANIAK) eingesetzt um die Grundlegenden FUnktionalitäten zu generieren. Weitere Funktionen, Strukturierung und Datenkuration wurde durch den Entwickler durchgeführt. Der Text in idesem Portfolio wurde ohne Hilfe der Sprachmodelle erstellt.</p>"
+    },
+    {
+      "@id": "portfolio:vorlesung-1",
+      "@type": "schema:Event",
+      "schema:name": "Vorlesung 1",
+      "schema:startDate": "2025-10-15",
+      "schema:about": {
+        "@id": "portfolio:modul"
+      },
+      "schema:organizer": {
+        "@id": "portfolio:tracy-arndt"
+      },
+      "discusses": [
+        {"@id": "portfolio:daten"},
+        {"@id": "portfolio:metadaten"},
+        {"@id": "portfolio:datenmodell"}
+      ],
+      "schema:content": "<p>Hierbei handelt es sich um den dritten Tag im Studium Bibliotheksinformatik an der TH Wildau und den ersten Tag im Modul Schnittstellen und Datenformate. Wir haben erfahren, dass das Modul in zwei Teile aufgeteilt ist und mit dem ersten Teil 'Datenformate' anfängt, gehalten von Tracy Arndt.</p><p>Die Vorlesung begann mit den typischen organisatorischen Inhalten und der Vorstellung. Die Ziele und Themen des Teilmoduls wurden vorgestellt. Was natürlich nicht fehlen durfte waren die Prüfungsleistungen und die dazugehörigen Bewertungsdimensionen.</p><p>Als erstes klärten wir was überhaupt Daten sind. Das war für mich nichts neues, denn ich habe in meinem Bachelor einen Schwerpunkt auf Daten gesetzt. Was Metadaten sind war mir auch dadurch bereits klar. Mit was ich aber keine Erfahrung, oder Wissen habe, sind bibliothekarische Metadaten. Aber dazu später mehr.</p><p>Es folgte eine Gruppenarbeit in welcher wir uns mit verschiedenen Begriffen auseinandersetzen sollte. Dazu wurden uns Quelle bereitgestellt. Meine Gruppe und ich haben dazu eine Visualisierung entworfen. Die Ergebnisse wurden dann präsentiert. Es wurde rege diskutiert was genau das Datenmodell ist und was alles als Standard gesehen werden kann, bzw. wo überall Standards auftreten können. Es war interessant zu sehen, das selbst Menschen, die täglich in dieser Thematik arbeiten, es schwer fällt alles genau zu beschreiben.</p><img src='imgs/datenformate.drawio.svg'><figcaption>Schema einer Datenbeschreibung</figcaption>"
+    },
+    {
+      "@id": "portfolio:vorlesung-2",
+      "@type": "schema:Event",
+      "schema:name": "Vorlesung 2",
+      "schema:startDate": "2025-10-17",
+      "schema:about": {
+        "@id": "portfolio:modul"
+      },
+      "schema:organizer": {
+        "@id": "portfolio:tracy-arndt"
+      },
+      "schema:previousItem": {
+        "@id": "portfolio:vorlesung-1"
+      },
+      "discusses": [
+        {"@id": "portfolio:pica"},
+        {"@id": "portfolio:marc"},
+        {"@id": "portfolio:metadaten"},
+        {"@id": "portfolio:frbr"},
+        {"@id": "portfolio:frbr-lrm"},
+        {"@id": "portfolio:linked-data"}
+      ],
+      "schema:content": "<p>An diesem Tag gingen wir tiefer in die Materie der Metadaten rein und begannen mit der Geschichte von PICA und MARC. Das Thema fand ich persönlich nicht unbedingt interessant, aber es war dennoch interessant zu sehen, wann diese entstanden sind und wie sich die Anforderungen an Metadatenformate gewandelt haben.</p><p>Das größte Thema dieses Tage was die Metadatenorganisation. Ein hochspannendes Thema, welches, finde ich persönlich, hochkompliziert werden kann. Allein, dass es Austauschformate geben muss, da es so viele unterschiedliche Metadatenformate gibt, macht das Thema kompliziert. Mein Gedanke: Wieso kann es nicht ein Datenformat/Metadatenformat für alles geben? Aber das ist klar: Man kann nie alles abbilden und selbst, wenn man so ein Format immer weiter erweitern würde, so würde es so viele Felder beinhalten, dass es allein aus Speichergründen nicht benutzt werden würde. Hier geht es vielmehr um die Aufgabenspezifische Benutzung. Es ist zwar eine schöne Vorstellung ein 'Omni'-Datenformat/Metadatenformat zu entwickeln, aber auch eine unmögliche.</p><p>Das FRBR Modell war mir bereit aus dem Bachelor bekannt gewesen. Ich wusste aber gar nicht, dass es mehrere Varianten gibt bzw. es weiterentwickelt wurde. Das FRBR-LRM hat mich sehr überrascht. Da es aber ein sehr theoretisches Modell ist, entsteht für mich persönlich wieder das gleiche Problem, dass man damit nicht alles abbilden kann und dass man sich ewig darüber streiten kann.</p><p>Dann kam das unglaublich tolle Thema: Linked (Open) Data. Ich hatte in Vergangenheit im rahmen meines Studiums damit Kontakt, weil mein Professor sich damit beschäftigte, aber konnte mir nie was darunter vorstellen. Für mich war es wieder eine sehr theoretische Vorstellung. Aber endlich habe ich es verstanden! Es ist ein Knowledge Graph! Bzw. ein Knowledge Graph entsteht durch das verbinden von Daten (Nodes). Das ist dann Linked Data! Da ich privat Obsidian benutze, um meine Notizen, etc. zu organisieren, war mir dieses Prinzip sehr gut bekannt, aber endlich habe ich es komplett verstanden und die einzelnen Knoten in meinen Kopf zum Thema Linked Data haben sich endlich 'verbunden' (XD).</p><p>Sehr interessant war auch die Tatsache, dass Linked Data besser für das Training oder Benutzung von KI Modellen wie LLMs sind. Das passt sehr gut zu meinem Projekt.</p>"
+    },
+    {
+      "@id": "portfolio:vorlesung-3",
+      "@type": "schema:Event",
+      "schema:name": "Vorlesung 3",
+      "schema:startDate": "2025-12-03",
+      "schema:about": {
+        "@id": "portfolio:modul"
+      },
+      "schema:organizer": {
+        "@id": "portfolio:tracy-arndt"
+      },
+      "schema:previousItem": {
+        "@id": "portfolio:vorlesung-2"
+      },
+      "discusses": [
+        {"@id": "portfolio:ontologie"},
+        {"@id": "portfolio:knowledge-graph"}
+      ],
+      "schema:content": "<p>An diesem Tag, habe ich endlich verstanden wie man Ontologien aufbaut! Bisher dachte ich immer, dass es ganz große textuelle Bäume sind, die sehr komplex aufgebaut sind. Das trifft so gesehen zu, aber auch nicht. Ontologien lassen sich darstellen das, was ich sowieso fast jeden tag gemacht habe, bzw. für mein privates Leben viel tue. Man erstellt Beschreibungen von Objekten und Beziehungen zu anderen Objekten, in Form eines Knowledge Graphs. Das war fast schon wie eine Erleuchtung für mich. Anhand dieser Ontologien, kann man Objekte beschreiben. Dafür gibt es dann verschiedenen Standards. Das war ein großer Lerneffekt und ein noch größerer Aha-Moment.</p>"
+    },
+    {
+      "@id": "portfolio:vorlesung-4",
+      "@type": "schema:Event",
+      "schema:name": "Vorlesung 4",
+      "schema:startDate": "2025-12-04",
+      "schema:about": {
+        "@id": "portfolio:modul"
+      },
+      "schema:organizer": {
+        "@id": "portfolio:tracy-arndt"
+      },
+      "schema:previousItem": {
+        "@id": "portfolio:vorlesung-3"
+      },
+      "discusses": [
+        {"@id": "portfolio:sparql"}
+      ],
+      "schema:content": "<p>Der SPARQL Tag. Das war für mich sehr viel SPARQL, was erstmal verarbeitet werden musste. Was sich mir noch nicht ganz erschlossen hat, ist, für was man SPARQL in der Praxis alles nutzen kann. Aber dafür muss ich die Folien nochmal durchgehen.</p>"
+    },
+    {
+      "@id": "portfolio:vorlesung-5",
+      "@type": "schema:Event",
+      "schema:name": "Vorlesung 5",
+      "schema:startDate": "2026-01-16",
+      "schema:about": {
+        "@id": "portfolio:modul"
+      },
+      "schema:organizer": {
+        "@id": "portfolio:tracy-arndt"
+      },
+      "schema:previousItem": {
+        "@id": "portfolio:vorlesung-4"
+      },
+      "schema:content": "<p>...</p>"
+    },
+    {
+      "@id": "portfolio:aufgabe-1",
+      "@type": "schema:Assignment",
+      "schema:name": "Aufgabe 1 - Datenworkflow",
+      "schema:educationalLevel": "Master",
+      "schema:courseCode": {
+        "@id": "portfolio:modul"
+      }
+    },
+    {
+      "@id": "portfolio:aufgabe-2",
+      "@type": "schema:Assignment",
+      "schema:name": "Aufgabe 2 - Linked Data",
+      "schema:educationalLevel": "Master",
+      "schema:courseCode": {
+        "@id": "portfolio:modul"
+      },
+      "discusses": {
+        "@id": "portfolio:linked-data"
+      }
+    },
+    {
+      "@id": "portfolio:patryk",
+      "@type": "schema:Person",
+      "schema:name": "Patryk Gadziomski",
+      "schema:affiliation": {
+        "@id": "portfolio:th-wildau"
+      },
+      "schema:memberOf": {
+        "@id": "portfolio:studiengang"
+      }
+    },
+    {
+      "@id": "portfolio:th-wildau",
+      "@type": "schema:EducationalOrganization",
+      "schema:name": "Technische Hochschule Wildau"
+    },
+    {
+      "@id": "portfolio:studiengang",
+      "@type": "schema:EducationalOccupationalProgram",
+      "schema:name": "Bibliotheksinformatik",
+      "schema:provider": {
+        "@id": "portfolio:th-wildau"
+      },
+      "hasPart": {
+        "@id": "portfolio:modul"
+      }
+    },
+    {
+      "@id": "portfolio:modul",
+      "@type": "schema:Course",
+      "schema:name": "Schnittstellen und Datenformate",
+      "schema:courseCode": "SuD"
+    },
+    {
+      "@id": "portfolio:tracy-arndt",
+      "@type": "schema:Person",
+      "schema:name": "Tracy Arndt",
+      "schema:jobTitle": "Dozentin"
+    },
+    {
+      "@id": "portfolio:daten",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "Daten",
+      "schema:description": "Grundlegendes Konzept von Daten"
+    },
+    {
+      "@id": "portfolio:metadaten",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "Metadaten",
+      "schema:description": "Daten über Daten, insbesondere bibliothekarische Metadaten",
+      "relatedTo": {
+        "@id": "portfolio:daten"
+      }
+    },
+    {
+      "@id": "portfolio:datenmodell",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "Datenmodell",
+      "schema:description": "Abstrakte Darstellung von Datenstrukturen",
+      "relatedTo": {
+        "@id": "portfolio:daten"
+      }
+    },
+    {
+      "@id": "portfolio:pica",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "PICA",
+      "schema:description": "Historisches Metadatenformat",
+      "relatedTo": {
+        "@id": "portfolio:metadaten"
+      }
+    },
+    {
+      "@id": "portfolio:marc",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "MARC",
+      "schema:description": "Machine-Readable Cataloging Format",
+      "relatedTo": {
+        "@id": "portfolio:metadaten"
+      }
+    },
+    {
+      "@id": "portfolio:frbr",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "FRBR",
+      "schema:description": "Functional Requirements for Bibliographic Records",
+      "relatedTo": [
+        {"@id": "portfolio:metadaten"},
+        {"@id": "portfolio:datenmodell"}
+      ]
+    },
+    {
+      "@id": "portfolio:frbr-lrm",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "FRBR-LRM",
+      "schema:description": "Weiterentwicklung des FRBR Modells",
+      "relatedTo": {
+        "@id": "portfolio:frbr"
+      }
+    },
+    {
+      "@id": "portfolio:linked-data",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "Linked (Open) Data",
+      "schema:description": "Prinzip der Verknüpfung von Daten über das Web, ermöglicht Knowledge Graphs",
+      "relatedTo": [
+        {"@id": "portfolio:knowledge-graph"},
+        {"@id": "portfolio:daten"}
+      ]
+    },
+    {
+      "@id": "portfolio:knowledge-graph",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "Knowledge Graph",
+      "schema:description": "Wissensnetzwerk aus verbundenen Knoten und Beziehungen, ähnlich wie in Obsidian",
+      "relatedTo": {
+        "@id": "portfolio:linked-data"
+      }
+    },
+    {
+      "@id": "portfolio:ontologie",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "Ontologie",
+      "schema:description": "Formale Beschreibung von Objekten und deren Beziehungen als Knowledge Graph",
+      "relatedTo": [
+        {"@id": "portfolio:knowledge-graph"},
+        {"@id": "portfolio:datenmodell"}
+      ]
+    },
+    {
+      "@id": "portfolio:sparql",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "SPARQL",
+      "schema:description": "Abfragesprache für RDF und Linked Data",
+      "relatedTo": {
+        "@id": "portfolio:linked-data"
+      }
+    }
+  ]
+}
