@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Lernportfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            min-height: calc(100vh - 40px);
+        }
+
+        .sidebar {
+            padding: 30px 20px;
+            background: #f8f9fa;
+        }
+
+        .sidebar-left {
+            width: 20%;
+            border-right: 2px solid #e9ecef;
+        }
+
+        .sidebar-right {
+            width: 20%;
+            border-left: 2px solid #e9ecef;
+        }
+
+        .main-content {
+            width: 60%;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        h2 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            color: #6c757d;
+            margin: 20px 0 10px;
+            font-size: 1.1em;
+        }
+
+        .profile {
+            margin-bottom: 30px;
+        }
+
+        .profile-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .profile-info p {
+            margin: 8px 0;
+            color: #495057;
+            font-size: 0.9em;
+        }
+
+        .article-list {
+            list-style: none;
+        }
+
+        .article-list li {
+            margin: 10px 0;
+        }
+
+        .article-list a {
+            display: block;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #495057;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .article-list a:hover {
+            background: #667eea;
+            color: white;
+            border-left-color: #764ba2;
+            transform: translateX(5px);
+        }
+
+        .article-list a.active {
+            background: #667eea;
+            color: white;
+            border-left-color: #764ba2;
+        }
+
+        .article-content {
+            line-height: 1.8;
+            color: #343a40;
+        }
+
+        .article-content p {
+            margin: 15px 0;
+        }
+
+        #knowledge-graph {
+            width: 100%;
+            height: 600px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            position: relative;
+        }
+
+        .graph-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        .node circle {
+            fill: #667eea;
+            stroke: #764ba2;
+            stroke-width: 2.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .node circle:hover {
+            fill: #764ba2;
+            r: 28;
+        }
+
+        .node.active circle {
+            fill: #ff6b6b;
+            stroke: #c92a2a;
+        }
+
+        .node text {
+            font-size: 11px;
+            fill: #333;
+            pointer-events: none;
+            text-anchor: middle;
+            font-weight: 500;
+        }
+
+        .link {
+            stroke: #999;
+            stroke-opacity: 0.6;
+            stroke-width: 1.5px;
+        }
+
+        .link.active {
+            stroke: #667eea;
+            stroke-opacity: 1;
+            stroke-width: 3px;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar-left, .sidebar-right, .main-content {
+                width: 100%;
+            }
+
+            .sidebar {
+                border: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar sidebar-left">
+            <div class="profile">
+                <h2>Über mich</h2>
+                <div class="profile-info">
+                    <p><strong>Name:</strong> Max Mustermann</p>
+                    <p><strong>Studium:</strong> Informatik</p>
+                    <p><strong>Semester:</strong> 5</p>
+                    <p><strong>Universität:</strong> TU Berlin</p>
+                </div>
+            </div>
+
+            <div class="directory">
+                <h2>Artikelverzeichnis</h2>
+                <ul class="article-list">
+                    <li><a href="#" data-article="intro" class="active">Einführung</a></li>
+                    <li><a href="#" data-article="semantic-web">Semantic Web</a></li>
+                    <li><a href="#" data-article="linked-data">Linked Data</a></li>
+                    <li><a href="#" data-article="rdf">RDF Grundlagen</a></li>
+                    <li><a href="#" data-article="knowledge-graphs">Knowledge Graphs</a></li>
+                    <li><a href="#" data-article="sparql">SPARQL Queries</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <article id="article-content" class="article-content">
+                <h1>Willkommen zu meinem Lernportfolio</h1>
+                <p>Dieses Portfolio dokumentiert meine Lernreise im Bereich Semantic Web und Linked Data. Hier sammle ich Artikel, Notizen und Erkenntnisse zu verschiedenen Themen.</p>
+                <h3>Über dieses Portfolio</h3>
+                <p>Das Besondere an diesem Lernportfolio ist die Integration eines Knowledge Graphs auf der rechten Seite. Der Graph visualisiert die Struktur und Beziehungen zwischen den verschiedenen Artikeln und Konzepten, ähnlich wie in Obsidian.</p>
+                <p>Jeder Knoten repräsentiert einen Artikel, und die Verbindungen zeigen, wie die Themen miteinander zusammenhängen. Klicke auf einen Knoten im Graph, um direkt zum entsprechenden Artikel zu springen!</p>
+            </article>
+        </main>
+
+        <aside class="sidebar sidebar-right">
+            <h2>Knowledge Graph</h2>
+            <div class="graph-info">
+                Visualisierung aller Artikel und ihrer Beziehungen. Klicke auf einen Knoten, um zum Artikel zu springen!
+            </div>
+            <div id="knowledge-graph"></div>
+        </aside>
+    </div>
+
+    <script>
+        // Artikel-Inhalte
+        const articles = {
+            intro: {
+                title: "Willkommen zu meinem Lernportfolio",
+                content: `
+                    <p>Dieses Portfolio dokumentiert meine Lernreise im Bereich Semantic Web und Linked Data. Hier sammle ich Artikel, Notizen und Erkenntnisse zu verschiedenen Themen.</p>
+                    <h3>Über dieses Portfolio</h3>
+                    <p>Das Besondere an diesem Lernportfolio ist die Integration eines Knowledge Graphs auf der rechten Seite. Der Graph visualisiert die Struktur und Beziehungen zwischen den verschiedenen Artikeln und Konzepten, ähnlich wie in Obsidian.</p>
+                    <p>Jeder Knoten repräsentiert einen Artikel, und die Verbindungen zeigen, wie die Themen miteinander zusammenhängen. Klicke auf einen Knoten im Graph, um direkt zum entsprechenden Artikel zu springen!</p>
+                `
+            },
+            "semantic-web": {
+                title: "Semantic Web",
+                content: `
+                    <p>Das Semantic Web ist eine Erweiterung des World Wide Web, die es ermöglicht, Informationen so zu strukturieren, dass sie von Maschinen verstanden und verarbeitet werden können.</p>
+                    <h3>Hauptziele</h3>
+                    <p>Das Hauptziel ist es, Daten im Web maschinenlesbar zu machen und semantische Beziehungen zwischen Informationen herzustellen. Dies ermöglicht intelligentere Suchanfragen und automatisierte Schlussfolgerungen.</p>
+                    <h3>Technologien</h3>
+                    <p>Die wichtigsten Technologien sind RDF, OWL, SPARQL und verschiedene Ontologien, die zusammen ein Framework für strukturierte Daten bilden.</p>
+                `
+            },
+            "linked-data": {
+                title: "Linked Data",
+                content: `
+                    <p>Linked Data beschreibt eine Methode zum Veröffentlichen strukturierter Daten im Web, sodass sie miteinander verknüpft und maschinenlesbar werden.</p>
+                    <h3>Die vier Prinzipien</h3>
+                    <p>1. Verwende URIs als Namen für Dinge<br>
+                    2. Verwende HTTP-URIs, damit Menschen diese Namen nachschlagen können<br>
+                    3. Stelle nützliche Informationen bereit, wenn jemand eine URI nachschlägt<br>
+                    4. Füge Links zu anderen URIs hinzu, damit weitere Dinge entdeckt werden können</p>
+                `
+            },
+            "rdf": {
+                title: "RDF Grundlagen",
+                content: `
+                    <p>RDF (Resource Description Framework) ist ein Standard für die Beschreibung von Ressourcen im Web.</p>
+                    <h3>RDF-Tripel</h3>
+                    <p>RDF basiert auf dem Konzept von Tripeln: Subjekt - Prädikat - Objekt. Diese einfache Struktur ermöglicht es, komplexe Beziehungen zwischen Ressourcen auszudrücken.</p>
+                    <h3>Serialisierungsformate</h3>
+                    <p>RDF kann in verschiedenen Formaten serialisiert werden: RDF/XML, Turtle, N-Triples, JSON-LD und mehr.</p>
+                `
+            },
+            "knowledge-graphs": {
+                title: "Knowledge Graphs",
+                content: `
+                    <p>Ein Knowledge Graph ist eine Wissensdatenbank, die Informationen in Form eines Graphen speichert, wobei Entitäten als Knoten und ihre Beziehungen als Kanten dargestellt werden.</p>
+                    <h3>Anwendungen</h3>
+                    <p>Knowledge Graphs werden von Suchmaschinen, Empfehlungssystemen und KI-Anwendungen genutzt, um kontextbezogene und relevante Informationen bereitzustellen.</p>
+                    <h3>Visualisierung</h3>
+                    <p>Die Visualisierung von Knowledge Graphs hilft dabei, komplexe Beziehungen und Strukturen auf einen Blick zu erfassen - wie im rechten Bereich dieser Seite zu sehen.</p>
+                `
+            },
+            "sparql": {
+                title: "SPARQL Queries",
+                content: `
+                    <p>SPARQL ist eine Abfragesprache für RDF-Daten, ähnlich wie SQL für relationale Datenbanken.</p>
+                    <h3>Grundstruktur</h3>
+                    <p>Eine SPARQL-Abfrage besteht typischerweise aus SELECT, WHERE und optionalen Filtern. Sie ermöglicht es, komplexe Muster in RDF-Graphen zu finden.</p>
+                    <h3>Anwendungsfälle</h3>
+                    <p>Mit SPARQL können Sie Knowledge Graphs durchsuchen, Daten aus verschiedenen Quellen kombinieren und komplexe Beziehungen analysieren.</p>
+                `
+            }
+        };
+
+        // Knowledge Graph Daten - einfache Struktur
+        const graphData = {
+            nodes: [
+                { id: "intro", label: "Einführung" },
+                { id: "semantic-web", label: "Semantic Web" },
+                { id: "linked-data", label: "Linked Data" },
+                { id: "rdf", label: "RDF" },
+                { id: "knowledge-graphs", label: "Knowledge Graphs" },
+                { id: "sparql", label: "SPARQL" }
+            ],
+            links: [
+                { source: "intro", target: "semantic-web" },
+                { source: "intro", target: "linked-data" },
+                { source: "semantic-web", target: "rdf" },
+                { source: "semantic-web", target: "linked-data" },
+                { source: "linked-data", target: "rdf" },
+                { source: "rdf", target: "knowledge-graphs" },
+                { source: "rdf", target: "sparql" },
+                { source: "knowledge-graphs", target: "sparql" }
+            ]
+        };
+
+        let currentArticle = 'intro';
+
+        // Navigation zwischen Artikeln
+        function loadArticle(articleId) {
+            currentArticle = articleId;
+            const article = articles[articleId];
+            
+            // Aktiven Link markieren
+            document.querySelectorAll('.article-list a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`[data-article="${articleId}"]`).classList.add('active');
+            
+            // Artikel laden
+            document.getElementById('article-content').innerHTML = `
+                <h1>${article.title}</h1>
+                ${article.content}
+            `;
+
+            // Graph aktualisieren
+            updateGraphHighlight(articleId);
+        }
+
+        document.querySelectorAll('.article-list a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadArticle(e.target.dataset.article);
+            });
+        });
+
+        // Knowledge Graph Visualisierung
+        function createKnowledgeGraph() {
+            const container = document.getElementById('knowledge-graph');
+            const width = container.offsetWidth;
+            const height = 600;
+
+            const svg = d3.select('#knowledge-graph')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const simulation = d3.forceSimulation(graphData.nodes)
+                .force('link', d3.forceLink(graphData.links).id(d => d.id).distance(80))
+                .force('charge', d3.forceManyBody().strength(-400))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(35));
+
+            const link = svg.append('g')
+                .selectAll('line')
+                .data(graphData.links)
+                .enter().append('line')
+                .attr('class', 'link');
+
+            const node = svg.append('g')
+                .selectAll('g')
+                .data(graphData.nodes)
+                .enter().append('g')
+                .attr('class', d => d.id === currentArticle ? 'node active' : 'node')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended))
+                .on('click', (event, d) => {
+                    loadArticle(d.id);
+                });
+
+            node.append('circle')
+                .attr('r', 25);
+
+            node.append('text')
+                .attr('dy', 40)
+                .text(d => d.label)
+                .style('font-size', '11px')
+                .each(function(d) {
+                    const text = d3.select(this);
+                    const words = d.label.split(' ');
+                    if (words.length > 1) {
+                        text.text('');
+                        words.forEach((word, i) => {
+                            text.append('tspan')
+                                .attr('x', 0)
+                                .attr('dy', i === 0 ? 0 : 12)
+                                .text(word);
+                        });
+                    }
+                });
+
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+
+            // Funktion zum Aktualisieren der Hervorhebung
+            window.updateGraphHighlight = function(articleId) {
+                svg.selectAll('.node')
+                    .classed('active', d => d.id === articleId);
+
+                const connectedNodeIds = new Set();
+                connectedNodeIds.add(articleId);
+                
+                graphData.links.forEach(link => {
+                    if (link.source.id === articleId) connectedNodeIds.add(link.target.id);
+                    if (link.target.id === articleId) connectedNodeIds.add(link.source.id);
+                });
+
+                svg.selectAll('.link')
+                    .classed('active', d => 
+                        (d.source.id === articleId || d.target.id === articleId)
+                    );
+            };
+        }
+
+        // Graph beim Laden initialisieren
+        createKnowledgeGraph();
+    </script>
+</body>
+</html>
