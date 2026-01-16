@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #3b3864;
             min-height: 100vh;
             padding: 20px;
         }
@@ -39,10 +39,11 @@
         .sidebar-left {
             width: 20%;
             border-right: 2px solid #e9ecef;
+            display: none;
         }
 
         .sidebar-right {
-            width: 20%;
+            width: 40%;
             border-left: 2px solid #e9ecef;
         }
 
@@ -204,16 +205,6 @@
 <body>
     <div class="container">
         <aside class="sidebar sidebar-left">
-            <div class="profile">
-                <h2>Über mich</h2>
-                <div class="profile-info">
-                    <p><strong>Name:</strong> Patryk Gadziomski</p>
-                    <p><strong>Studium:</strong> Bibliotheksinformatik</p>
-                    <p><strong>Semester:</strong> 1</p>
-                    <p><strong>Hochschule:</strong> TH Wildau</p>
-                </div>
-            </div>
-
             <div class="directory">
                 <h2>Artikelverzeichnis</h2>
                 <ul class="article-list">
@@ -241,9 +232,6 @@
 
         <aside class="sidebar sidebar-right">
             <h2>Knowledge Graph</h2>
-            <div class="graph-info">
-                Visualisierung aller Artikel und ihrer Beziehungen. Klicke auf einen Knoten, um zum Artikel zu springen!
-            </div>
             <div id="knowledge-graph"></div>
         </aside>
     </div>
