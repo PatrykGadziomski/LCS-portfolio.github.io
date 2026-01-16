@@ -114,7 +114,7 @@
       "schema:previousItem": {
         "@id": "portfolio:vorlesung-4"
       },
-      "schema:content": "<p>...</p>"
+      "schema:content": "<p>An diesem Tag, dem letzten Tag des Teilmoduls, fand ein Workshop zu Open Refine unnd Metafacture statt. Bei Open Refine wurden uterschieldiche Funktionen entlang der Dokumentation gezeigt und ausprobiert. Bei Metafactuer wurden die funktionen anhand des Tutorials gezeigt. Perönlich nutze ich solche Software nicht wirklich in meiner Praxis. Wenn ich Operationen zum Filtern oder Clustering von großen Datenmengen tue, dann tue ich das meistens in Python mit Bibliotheken, die mit großen Datenmengen arbeiten können. Da ich das oft tue, bin ich mit Python auch schneller unterwegs bei der Datenanalyse als mit Software mit einer GUI. Ich kann aber komplett nachvollziehen, dass Software mit einr GUI für Personen, die nicht oft programieren, von Vorteil ist. Was ich aber sehr schön fand und auch prktisch war der Abgleich von den Daten mit anderen Datensätze (z.B. dem Datensatz der DNB).</p><p>Bei Metafacture war mein Eindruck sehr ähnlich. Ich fand aber das Einlesen eines Datensatzes (z.B in JSON) und des exportieren in einem anderen Datenformat sehr praktisch. Ansonsten fand ich persönlich nciht viel Nutzen darin für meine alltägliche Arbeit. Das kann sich aber noch ändern, kann sein.</p>"
     },
     {
       "@id": "portfolio:aufgabe-1",
