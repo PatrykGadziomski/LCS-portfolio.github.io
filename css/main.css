@@ -185,3 +185,7 @@ body {
 p {
     text-align: justify;
 }
+
+.note {
+    color: #27ae60;
+}
